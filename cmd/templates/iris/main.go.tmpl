@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+	"github.com/gobuffalo/packr/v2"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+func main() {
+	box := packr.New("", "./before-modify")
+	if err := os.MkdirAll("./templates", 0755); err != nil {
+		return
+	}
+
+	for _, name := range box.List() {
+
+		if name == "README.md" {
+			continue
+		}
+
+		tmpl, _ := box.Find(name)
+
+		name = fmt.Sprintf("%s.tmpl", name)
+
+		i := strings.LastIndex(name, string(os.PathSeparator))
+
+		if i > 0 {
+			dir := name[:i]
+			if err := os.MkdirAll(filepath.Join("/Users/fzy/workspace/Go/src/IrisTest/modify-file/templates/", dir), 0755); err != nil {
+				return
+			}
+		}
+
+		_ = ioutil.WriteFile(fmt.Sprintf("/Users/fzy/workspace/Go/src/IrisTest/modify-file/templates/%s", name), tmpl, 0755)
+		//if err := WriteFile(fmt.Sprintf("/Users/fzy/workspace/Go/src/IrisTest/modify-file/templates/%s", name), tmpl); err != nil {
+		//	return
+		//}
+	}
+
+
+
+}
