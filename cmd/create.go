@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"gcli/lib"
 	"gcli/util/xfile"
@@ -42,6 +43,7 @@ modify the project path: gcli create demo --path projectPath`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		err := CreateProject(args)
+
 		if err != nil {
 			fmt.Println(xprintf.Red(err.Error()))
 			return
@@ -57,8 +59,11 @@ modify the project path: gcli create demo --path projectPath`,
 func CreateProject(newArgs []string) (err error) {
 
 	if lib.Version() < "1.13" {
-		fmt.Println(xprintf.Red("the current version is relatively low"))
-		return
+		return errors.New("the current version is relatively low")
+	}
+
+	if framework != "iris" && framework != "echo" {
+		return errors.New("error selection of framework type")
 	}
 
 
