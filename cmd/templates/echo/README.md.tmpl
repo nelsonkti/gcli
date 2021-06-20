@@ -46,7 +46,7 @@ go get -u github.com/nelsonkti/echo-framework
 
 
 ## 项目介绍
-#### 项目默认支持 `nsq`、`memcache`、`redis`，如果不需要，可以再 `main` 文件夹下 注释以下代码
+#### 项目默认支持 `nsq`、`memcache`、`redis`，如果不需要，可以在 `main` 文件夹下 注释以下代码
 
 `memcache` 连接
 ```
