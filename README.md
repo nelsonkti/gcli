@@ -14,6 +14,8 @@
 go get -u github.com/nelsonkti/gcli
 ```
 
+* windows 用户:  
+  若想全局使用gcli命令,请将该命令配置（${GOPATH}/src/bin/gcli.exe）加入系统的环境变量中
 
 ## 用法
 
