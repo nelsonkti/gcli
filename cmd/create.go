@@ -3,10 +3,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"gcli/lib"
-	"gcli/util/xfile"
-	"gcli/util/xprintf"
 	"github.com/gobuffalo/packr/v2"
+	"github.com/nelsonkti/gcli/lib"
+	"github.com/nelsonkti/gcli/util/xfile"
+	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
@@ -133,6 +133,7 @@ func doCreateProject() (err error) {
 		if strings.HasSuffix(name, ".tmpl") {
 			name = strings.TrimSuffix(name, ".tmpl")
 		}
+
 
 		if err = xfile.WriteFile(filepath.Join(project.Path, name), tmpl, project); err != nil {
 			return
