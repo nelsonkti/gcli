@@ -1,7 +1,7 @@
 package config
 
 import (
-	"{{.ShortPath}}{{.Name}}/lib/helper"
+	"{{.ShortPath}}{{.Name}}/lib/localtion"
 	"{{.ShortPath}}{{.Name}}/lib/logger"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
@@ -35,13 +35,11 @@ func init() {
 	//消息队列
 	newNsq()
 
-	// 设置域名
-	newDomain()
+	// 日志
+	newLogger()
 }
 
 func setAppPath() {
-
-	projectName := "yim-live"
 
 	path, err := os.Getwd()
 
@@ -49,7 +47,13 @@ func setAppPath() {
 		panic(err)
 	}
 
-	AppPath = path[0 : strings.Index(path, projectName)+len(projectName)]
+
+	if strings.Contains(path, AppName) {
+		AppPath = path[0 : strings.Index(path, AppName)+len(AppName)]
+	} else {
+		AppPath = path
+	}
+
 }
 
 func getContent() {
@@ -57,10 +61,10 @@ func getContent() {
 	content, err := ioutil.ReadFile(AppPath + "/config.json")
 
 	if err != nil {
-		logger.Sugar.Error(err)
+		//logger.Sugar.Error(err)
 		content, err = ioutil.ReadFile("/wwwroot/config.json")
-		if err == nil {
-			logger.Sugar.Error(err)
+		if err != nil {
+			//logger.Sugar.Error(err)
 			panic(err)
 		}
 	}
@@ -160,21 +164,23 @@ func newNsq() {
 	}
 
 	NSQServerHost := gjson.Get(configStr, "nsq_server_hosts").String()
-	if value != "" {
+
+	if NSQServerHost != "" {
 		NSQIP = NSQServerHost
 	}
 
 	//nsq tcp hosts
-	NSQServerHosts[helper.GetLocalIP()+"."+ConnectTCPListenPort] = struct{}{}
+	NSQServerHosts[localtion.GetLocalIP()+"."+ConnectTCPListenPort] = struct{}{}
 	for _, v := range gjson.Get(configStr, "nsq_server_hosts").Array() {
 		NSQServerHosts[v.String()+"."+ConnectTCPListenPort] = struct{}{}
 	}
 
 }
 
-func newDomain() {
-	value = gjson.Get(configStr, "app_domain").String() //项目域名
-	if value != "" {
-		AppDomain = value
-	}
+
+// 初始化日志文件
+func newLogger() {
+	logger.InitLogger(AppName)
 }
+
+

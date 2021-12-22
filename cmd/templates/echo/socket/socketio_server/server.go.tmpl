@@ -10,20 +10,11 @@ import (
 	"github.com/googollee/go-socket.io/engineio/transport/websocket"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"strconv"
-	"sync"
 )
 
 const NameSpace = "/"
-
-type RespData struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
-}
-
-var ClientNode sync.Map
-var UserClientNodeKey sync.Map
 
 func Start(port int) {
 
@@ -33,30 +24,26 @@ func Start(port int) {
 		return true
 	}
 
-	server, err := socketio.NewServer(&engineio.Options{
+	server := socketio.NewServer(&engineio.Options{
 		Transports: []transport.Transport{
 			wt,
 			pt,
 		},
 	})
 
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	server.OnConnect(NameSpace, func(s socketio.Conn) error {
-		//logger.Sugar.Warn("/:open: id: "+s.ID())
 		return nil
 	})
 
 	server.OnError(NameSpace, func(s socketio.Conn, e error) {
-		//logger.Sugar.Error("/:error: id: " + s.ID() + "; message:" + e.Error())
 	})
 
 	//断开连接
 	server.OnDisconnect(NameSpace, func(s socketio.Conn, reason string) {
 
 	})
+
 
 	go server.Serve()
 	defer server.Close()
@@ -70,15 +57,7 @@ func Start(port int) {
 
 func StopDevice() {
 
-	ClientNode.Range(func(key, value interface{}) bool {
-		ClientNode.Delete(key)
-		return true
-	})
-
-	UserClientNodeKey.Range(func(key, value interface{}) bool {
-		UserClientNodeKey.Delete(key)
-		return true
-	})
-
 	logger.Sugar.Info("stop device")
 }
+
+

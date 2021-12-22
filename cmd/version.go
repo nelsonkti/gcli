@@ -2,12 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/nelsonkti/gcli/util/xprintf"
+	"gcli/util/xprintf"
 	"github.com/spf13/cobra"
 )
 
-const Version = "1.0"
-
+const Version = "1.1"
 
 func init() {
 	Cmd.AddCommand(version)
@@ -18,6 +17,6 @@ var version = &cobra.Command{
 	Short: "print gcli version",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(xprintf.Blue("gcli version "+Version))
+		fmt.Println(xprintf.Blue("gcli version2 "+Version))
 	},
 }

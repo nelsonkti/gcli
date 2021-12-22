@@ -1,0 +1,24 @@
+/**
+** @创建时间 : 2021/11/15 15:16
+** @作者 : fzy
+ */
+package consumer
+
+import (
+	"{{.ShortPath}}{{.Name}}/util/xnsq/consumer"
+	"{{.ShortPath}}{{.Name}}/util/xnsq/server"
+	"{{.ShortPath}}{{.Name}}/util/xnsq/service/registry"
+)
+
+func LogicConsumerHandler(opt registry.Options) server.ConsumerHandler {
+	consumer.Options = opt
+	return &LogicNsqConsumer{opt}
+}
+
+type LogicNsqConsumer struct {
+	registry.Options
+}
+
+func (l *LogicNsqConsumer) Run() {
+
+}

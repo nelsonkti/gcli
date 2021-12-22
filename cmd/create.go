@@ -3,10 +3,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"gcli/lib"
+	"gcli/util/xfile"
+	"gcli/util/xprintf"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/nelsonkti/gcli/lib"
-	"github.com/nelsonkti/gcli/util/xfile"
-	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
@@ -66,7 +66,6 @@ func CreateProject(newArgs []string) (err error) {
 		return errors.New("error selection of framework type")
 	}
 
-
 	if len(newArgs) <= 0 {
 		fmt.Println(xprintf.Red("execution failed. entered the command incorrectly, please use gcli create -h for details"))
 		return
@@ -109,9 +108,9 @@ func doCreateProject() (err error) {
 		return
 	}
 
-	templatesPath := fmt.Sprintf("./templates/"+framework)
+	templatesPath := fmt.Sprintf("./templates/" + framework)
 
-	box := packr.New("", templatesPath)
+	box := packr.New(templatesPath, templatesPath)
 
 	for _, name := range box.List() {
 
@@ -133,7 +132,6 @@ func doCreateProject() (err error) {
 		if strings.HasSuffix(name, ".tmpl") {
 			name = strings.TrimSuffix(name, ".tmpl")
 		}
-
 
 		if err = xfile.WriteFile(filepath.Join(project.Path, name), tmpl, project); err != nil {
 			return

@@ -6,7 +6,7 @@ import (
 
 func main() {
 	// 迁移伊把手
-	//conn := db.ConnectMysql(getDbConfig("jz_ybs"), "jz_ybs")
+	//conn := db.ConnectMysql(getDbConfig("test"), "test")
 	//defer db.DisconnectMysql()
 	//conn.AutoMigrate(&models.EmployeesBase{})
 }
