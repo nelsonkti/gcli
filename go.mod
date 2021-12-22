@@ -1,4 +1,4 @@
-module gcli
+module github.com/nelsonkti/gcli
 
 go 1.16
 
