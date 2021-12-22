@@ -24,6 +24,8 @@ var modelCommand = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		zhName = "模型"
+
 		err := makeFile(args, "model")
 
 		if err != nil {

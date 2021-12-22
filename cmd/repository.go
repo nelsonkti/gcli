@@ -24,6 +24,7 @@ var repositoryCommand = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		zhName = "仓库"
 		err := makeFile(args, "repository")
 
 		if err != nil {

@@ -23,6 +23,7 @@ var serviceCommand = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		zhName = "服务"
 		err := makeFile(args, "service")
 
 		if err != nil {

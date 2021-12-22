@@ -17,6 +17,7 @@ import (
 )
 
 var name string
+var zhName string
 var defaultPath = "./"
 
 func makeFile(args []string, createType string) error {
@@ -42,7 +43,7 @@ func makeFile(args []string, createType string) error {
 
 	hostname, _ := os.Hostname()
 	tmplData := map[string]interface{}{
-		"Name":       name,
+		"Name":       fmt.Sprintf("%s %s", name, zhName),
 		"CreateTime": time.Now().Format("2006-01-02 15:04:05"),
 		"Author":     hostname,
 		"PackName":   packName,

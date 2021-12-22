@@ -49,5 +49,20 @@ echo-framework：https://github.com/nelsonkti/echo-framework
 iris-framework：https://github.com/nelsonkti/iris-framework
 ```
 
+创建 `model`
+```
+gcli make:model Employee\\EmployeeCare --n="员工关怀"
+```
+
+创建 `repository`
+```
+gcli make:model Employee\\EmployeeCare --n="员工关怀"
+```
+
+创建 `service`
+```
+gcli make:model Employee\\EmployeeCare --n="员工关怀"
+```
+
 ### 环境要求
  go >= 1.13
