@@ -7,8 +7,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"gcli/util/xfile"
-	"gcli/util/xstring"
+	"github.com/nelsonkti/gcli/util/xfile"
+	"github.com/nelsonkti/gcli/util/xstring"
 	"github.com/gobuffalo/packr/v2"
 	"os"
 	"path/filepath"

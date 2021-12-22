@@ -1,6 +1,6 @@
 package main
 
-import "gcli/cmd"
+import "github.com/nelsonkti/gcli/cmd"
 
 func main() {
 	cmd.Execute()

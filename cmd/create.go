@@ -3,9 +3,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"gcli/lib"
-	"gcli/util/xfile"
-	"gcli/util/xprintf"
+	"github.com/nelsonkti/gcli/lib"
+	"github.com/nelsonkti/gcli/util/xfile"
+	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/spf13/cobra"
 	"os"
