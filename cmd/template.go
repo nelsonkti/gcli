@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"gcli/lib"
 	"gcli/util/xfile"
+	"gcli/util/xprintf"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/spf13/cobra"
 	"io/ioutil"
@@ -24,14 +25,14 @@ var (
 
 func init() {
 
-	Cmd.AddCommand(template)
+	Cmd.AddCommand(templateCommand)
 
-	Cmd.PersistentFlags().StringVar(&sourcePath, "s", "$GOPATH", "source file path")
-	Cmd.PersistentFlags().StringVar(&destPath, "d", "$GOPATH", "create file path")
+	templateCommand.PersistentFlags().StringVar(&sourcePath, "s", "$GOPATH", "source file path")
+	templateCommand.PersistentFlags().StringVar(&destPath, "d", "$GOPATH", "create file path")
 
 }
 
-var template = &cobra.Command{
+var templateCommand = &cobra.Command{
 	Use:   "template",
 	Short: "template service",
 	Long:  ``,
@@ -39,7 +40,7 @@ var template = &cobra.Command{
 		err := conversionTemplate()
 
 		if err != nil {
-			//fmt.Println(xprintf.Red(err.Error()))
+			fmt.Println(xprintf.Red(err.Error()))
 			return
 		}
 	},

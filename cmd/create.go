@@ -29,9 +29,9 @@ func init() {
 
 	Cmd.AddCommand(createProject)
 
-	Cmd.PersistentFlags().StringVar(&project.Path, "path", "$GOPATH", "create project path")
+	createProject.PersistentFlags().StringVar(&project.Path, "path", "$GOPATH", "create project path")
 
-	Cmd.PersistentFlags().StringVar(&framework, "fw", "echo", "")
+	createProject.PersistentFlags().StringVar(&framework, "fw", "echo", "")
 
 }
 
