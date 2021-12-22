@@ -19,11 +19,14 @@ import (
 var name string
 var zhName string
 var defaultPath = "./"
+var tmplPath = "./templates/make_templates/"
+var tmplFileName = "tmp.go.tmpl"
 
 func makeFile(args []string, createType string) error {
 	if name == "" {
 		return errors.New("请输入服务名称, 查看详情 -help")
 	}
+
 	file := strings.Replace(args[0], "\\", "/", -1)
 
 	fileName := getFileName(file)
@@ -31,9 +34,9 @@ func makeFile(args []string, createType string) error {
 	packName := getPackName(path)
 
 	fmt.Println(packName)
-	templPath := "./templates/make_templates/"
-	box := packr.New(templPath, templPath)
-	tmpl, _ := box.FindString("tmp.go.tmpl")
+
+	box := packr.New(tmplPath, tmplPath)
+	tmpl, _ := box.FindString(tmplFileName)
 
 	if err := os.MkdirAll(path, 0755); err != nil {
 		return err
