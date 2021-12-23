@@ -1,0 +1,36 @@
+{
+  "env": "local",
+  "redis_address": "127.0.0.1:6379",
+  "redis_password": "",
+  "memcache": "0.0.0.0:11211",
+  "nsq_consumers": [
+    "0.0.0.0:4161"
+  ],
+  "nsq_server_hosts": "0.0.0.0:4150",
+  "app_domain": "localhost",
+  "mysql": [
+    [
+      {
+        "driver": "mysql",
+        "host": "0.0.0.0",
+        "read": ["127.0.0.1"],
+        "port": "3306",
+        "user": "xxxx",
+        "pwd": "xxx",
+        "name": "xxx",
+        "conn_name": "xx"
+      }
+    ],
+    [
+      {
+        "driver": "mysql",
+        "host": "0.0.0.0",
+        "port": "3306",
+        "user": "xxx",
+        "pwd": "xx",
+        "name": "xxx",
+        "conn_name": "xx"
+      }
+    ]
+  ]
+}
