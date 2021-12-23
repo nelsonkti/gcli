@@ -20,7 +20,7 @@ func init() {
 
 var modelCommand = &cobra.Command{
 	Use:   "make:model",
-	Short: "create a model file",
+	Short: "create a new model file",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 

@@ -20,7 +20,7 @@ func init() {
 
 var repositoryCommand = &cobra.Command{
 	Use:   "make:repository",
-	Short: "create a repository file",
+	Short: "create a new repository file",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 

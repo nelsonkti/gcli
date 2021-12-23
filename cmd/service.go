@@ -19,7 +19,7 @@ func init() {
 
 var serviceCommand = &cobra.Command{
 	Use:   "make:service",
-	Short: "create a service file",
+	Short: "create a new service file",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
