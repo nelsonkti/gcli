@@ -16,7 +16,6 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"path/filepath"
-	"strconv"
 	"sync"
 	"syscall"
 )
@@ -70,8 +69,7 @@ func (p *socketProgram) Start() error {
 	}()
 
 	go func() {
-		port, _ := strconv.Atoi(config.AppConf.Server.Socket.Addr)
-		socketio_server.Start(port)
+		socketio_server.Start(int(config.AppConf.Server.Socket.Port))
 	}()
 
 	return nil

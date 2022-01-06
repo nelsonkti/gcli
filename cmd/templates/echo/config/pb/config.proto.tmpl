@@ -33,7 +33,7 @@ message App {
 
 message Server {
   message Network {
-    string addr = 1;
+    int32 port = 1;
     google.protobuf.Duration timeout = 2;
   }
   Network http = 6;

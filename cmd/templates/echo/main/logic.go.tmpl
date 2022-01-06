@@ -12,6 +12,7 @@ import (
 	"{{.ShortPath}}{{.Name}}/routes"
 	"{{.ShortPath}}{{.Name}}/util/xnsq"
 	"{{.ShortPath}}{{.Name}}/util/xnsq/service/registry"
+	"fmt"
 	"github.com/judwhite/go-svc"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -93,7 +94,7 @@ func newApp() {
 	e.Use(middleware.CORS())
 	routes.Register(e)
 
-	e.Logger.Fatal(e.Start(config.AppConf.Server.Http.Addr))
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", config.AppConf.Server.Http.Port)))
 }
 
 func (p *logicProgram) Stop() error {
