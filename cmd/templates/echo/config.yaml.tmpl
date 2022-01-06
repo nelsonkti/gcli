@@ -1,5 +1,5 @@
 app:
-  name: {{.ShortPath}}{{.Name}}
+  name: {{.Name}}
   env: local
 #  path:
 #    app_path: "lllk/llkl"
@@ -23,11 +23,10 @@ data:
       -
         host: 0.0.0.0
         read: [0.0.0.0]
-        port: 0
+        port: 3306
         database: demo
-        username: demoname
-        password: pawdd
-        alias: demo_alias
+        username: demo
+        password: demo
   redis:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s

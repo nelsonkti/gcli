@@ -1,17 +1,17 @@
 ```
-           _                  __                                             _    
+           _                  __                                             _
   ___  ___| |__   ___        / _|_ __ __ _ _ __ ___   _____      _____  _ __| | __
  / _ \/ __| '_ \ / _ \ _____| |_| '__/ _` | '_ ` _ \ / _ \ \ /\ / / _ \| '__| |/ /
-|  __/ (__| | | | (_) |_____|  _| | | (_| | | | | | |  __/\ V  V / (_) | |  |   < 
+|  __/ (__| | | | (_) |_____|  _| | | (_| | | | | | |  __/\ V  V / (_) | |  |   <
  \___|\___|_| |_|\___/      |_| |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
-                                                                                  
+
 ```
 
-[{{.Name}}](https://github.com/nelsonkti/echo-framework) 是基于 echo 搭建用于快速开发的项目框架
+[{{.Name}}](https://github.com/nelsonkti/{{.ShortPath}}{{.Name}}) 是基于 echo 搭建用于快速开发的项目框架
 
 ## 安装
 ```
-go get -u github.com/nelsonkti/echo-framework
+go get -u github.com/nelsonkti/{{.ShortPath}}{{.Name}}
 ```
 
 ## 功能叙述
@@ -21,7 +21,7 @@ go get -u github.com/nelsonkti/echo-framework
 - nsq 消息队列
 - 分布式部署
 
-## 文件夹结构 
+## 文件夹结构
 - config 文件配置和初始化配置数据
 - cron 定时任务
 - lib 日常使用的库
@@ -40,7 +40,7 @@ go get -u github.com/nelsonkti/echo-framework
        - responses 返回层
        - services 服务层主要处理业务逻辑
        - validators 表单验证器
-      
+
     - nsq nsq 生产者和消费者
        - consumer 消费者
        - producer 生产者
@@ -49,19 +49,19 @@ go get -u github.com/nelsonkti/echo-framework
 ## 项目介绍
 #### 项目默认支持 `nsq`、`memcache`、`redis`，如果不需要，可以在 `main` 文件夹下 注释以下代码
 
-`memcache` 
+`memcache`
 ```
 //连接 memcache
 db.ConnectMemcache(config.Memcache)
 ```
 
-`redis` 
+`redis`
 ```
 //连接redis
 db.ConnectRedis(config.RedisIP, config.RedisPassword, 0, "default")
 ```
 
-`nsq` 
+`nsq`
 ```
 //连接nsq
 go func() {
@@ -106,7 +106,7 @@ cd main
 go run socket.go
 ```
 
-## 环境要求 
+## 环境要求
 
 - go >= 1.16
 
