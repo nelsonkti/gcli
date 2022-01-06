@@ -6,12 +6,15 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
-	"strings"
 	"time"
 )
 
 var Sugar *zap.SugaredLogger
 
+// 初始化日志文件
+func init() {
+	InitLogger()
+}
 
 func NewEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
@@ -34,12 +37,8 @@ func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 }
 
-func InitLogger(AppName string)  {
+func InitLogger() {
 	str, _ := os.Getwd()
-
-	if strings.Contains(str, AppName) {
-		str = str[:strings.Index(str, AppName)+len(AppName)]
-	}
 
 	filename := fmt.Sprintf("%s/log/echo.log", str)
 
@@ -57,4 +56,3 @@ func InitLogger(AppName string)  {
 	)
 	Sugar = zap.New(core, zap.AddCaller()).Sugar()
 }
-

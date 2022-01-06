@@ -28,6 +28,7 @@ type logicProgram struct {
 }
 
 func main() {
+	config.Init()
 	p := &logicProgram{}
 	if err := svc.Run(p, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL); err != nil {
 		logger.Sugar.Fatal(err)
@@ -49,20 +50,19 @@ func (p *logicProgram) Start() error {
 	db.InitMysql()
 
 	//连接 memcache
-	db.ConnectMemcache(config.Memcache)
+	db.ConnectMemcache(config.AppConf.Data.Memcache.Host)
 
 	//连接redis
-	db.ConnectRedis(config.RedisIP, config.RedisPassword, 0, "default")
+	db.ConnectRedis(config.AppConf.Data.Redis.Addr, config.AppConf.Data.Redis.Password, 0, "default")
 
 	go func() {
 		defer helper.RecoverPanic()
 
 		server := xnsq.NewNsqServer(registry.Options{
-			NsqAddress:     config.NSQIP,
-			NSQConsumers:   config.NSQConsumers,
-			NSQServerHosts: config.NSQServerHosts,
-			Env:            config.Env,
-			LocalAddress:   localtion.GetLocalIP(),
+			NsqAddress:   config.AppConf.Mq.Nsq.Host,
+			NSQConsumers: config.AppConf.Mq.Nsq.Consumer,
+			Env:          config.AppConf.App.Env,
+			LocalAddress: localtion.GetLocalIP(),
 		})
 
 		server.Run(consumer.LogicConsumerHandler(server.Opt))
@@ -70,8 +70,8 @@ func (p *logicProgram) Start() error {
 	}()
 
 	//启动定时任务
-	if config.Env != "local" {
-		cron.RegisterCrons(config.RedisIP, config.RedisPassword)
+	if config.AppConf.App.Env != "local" {
+		cron.RegisterCrons(config.AppConf.Data.Redis.Addr, config.AppConf.Data.Redis.Password)
 	}
 
 	// 启动app
@@ -94,7 +94,7 @@ func newApp() {
 	e.Use(middleware.CORS())
 	routes.Register(e)
 
-	e.Logger.Fatal(e.Start(config.LogicHTTPListenIP))
+	e.Logger.Fatal(e.Start(config.AppConf.Server.Http.Addr))
 }
 
 func (p *logicProgram) Stop() error {

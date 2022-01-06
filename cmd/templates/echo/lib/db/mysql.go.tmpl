@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"{{.ShortPath}}{{.Name}}/config"
+	config2 "{{.ShortPath}}{{.Name}}/config/pb"
 	my_logger "{{.ShortPath}}{{.Name}}/lib/logger"
 	"fmt"
 	"gorm.io/driver/mysql"
@@ -19,19 +20,19 @@ var mysqlDatabases sync.Map
 const defaultConfig = "?parseTime=true&charset=utf8mb4&loc=Asia%2FShanghai"
 
 func InitMysql() {
-	for key, Config := range config.MysqlConfig {
-		ConnectMysql(Config, key)
+	for _, conf := range config.AppConf.Data.Connection.Database {
+		ConnectMysql(conf)
 	}
 }
 
-func ConnectMysql(Config config.DBConfig, name string) *gorm.DB {
+func ConnectMysql(conf *config2.Data_Database) *gorm.DB {
 	var dialect []gorm.Dialector
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s%s", Config.User, Config.Pwd, Config.Host, Config.Port, Config.Name, defaultConfig)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s%s", conf.Username, conf.Password, conf.Host, conf.Port, conf.Database, defaultConfig)
 
 	logLevel := logger.Silent
 
-	if config.Env == "local" {
+	if config.AppConf.App.Env == "local" {
 		logLevel = logger.Info
 	}
 
@@ -44,10 +45,10 @@ func ConnectMysql(Config config.DBConfig, name string) *gorm.DB {
 		panic(err)
 	}
 
-	if Config.RHost != nil {
+	if conf.Read != nil {
 
-		for _, v := range Config.RHost {
-			sqlRead := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s%s", Config.User, Config.Pwd, v, Config.Port, Config.Name, defaultConfig)
+		for _, v := range conf.Read {
+			sqlRead := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s%s", conf.Username, conf.Password, v, conf.Port, conf.Database, defaultConfig)
 			dialect = append(dialect, mysql.Open(sqlRead))
 		}
 
@@ -63,15 +64,15 @@ func ConnectMysql(Config config.DBConfig, name string) *gorm.DB {
 	sqlDB, err := db.DB()
 
 	if err != nil {
-		my_logger.Sugar.Info("failed to connect mysql:" + name)
-		panic("failed to connect mysql:" + name)
+		my_logger.Sugar.Info("failed to connect mysql:" + conf.Database)
+		panic("failed to connect mysql:" + conf.Database)
 	}
 
-	ping(sqlDB, name)
+	ping(sqlDB, conf.Database)
 
 	sqlDB = setDefault(sqlDB)
 
-	mysqlDatabases.Store(name, db)
+	mysqlDatabases.Store(conf.Database, db)
 
 	// 启用Logger，显示详细日志
 	return db

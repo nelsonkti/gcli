@@ -8,6 +8,5 @@ type Options struct {
 	NsqAddress     string
 	NSQConsumers   []string
 	Env            string
-	NSQServerHosts map[string]struct{}
 	LocalAddress   string
 }

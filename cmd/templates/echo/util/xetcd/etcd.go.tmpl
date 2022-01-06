@@ -7,10 +7,10 @@ package xetcd
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"{{.ShortPath}}{{.Name}}/lib/logger"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"io/ioutil"
 	"time"
-	"{{.ShortPath}}{{.Name}}/lib/logger"
 )
 
 var Client *clientv3.Client
@@ -100,12 +100,11 @@ func tlsConfig(cfg Config) *tls.Config {
 	return tlsConfig
 }
 
-
 func Close() {
 	defer Client.Close()
 }
 
-func etcdPfx(cfg Config)  {
+func etcdPfx(cfg Config) {
 	Pfx = cfg.Pfx
 }
 
@@ -132,5 +131,3 @@ func defaultTlsCa(cafg *CAConfig) {
 
 	cafg.Ca = cafg.Path + cafg.Ca
 }
-
-

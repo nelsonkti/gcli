@@ -6,4 +6,6 @@ package consumer
 
 var Separator = "@"
 
-
+func test()  {
+	
+}
