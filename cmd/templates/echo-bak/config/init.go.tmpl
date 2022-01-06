@@ -24,7 +24,7 @@ type Config struct {
 	file *xfile.FileInfo
 }
 
-func init() {
+func Init() {
 	initConf(initFile()).initAppPath()
 }
 
@@ -60,23 +60,7 @@ func initConf(file *xfile.FileInfo) *Config {
 	return &Config{}
 }
 
-func (c *Config) initAppPath() (Config *Config) {
-
-	if path := AppConf.App.Path; path == nil {
-		path, err := os.Getwd()
-
-		if err != nil {
-			panic(err)
-		}
-
-		AppConf.App.Path = &config.App_Path{
-			AppPath:      path,
-			UploadPath:   uploadPath,
-			DownloadPath: DownloadPath,
-		}
-
-		return
-	}
+func (c *Config) initAppPath() *Config {
 
 	if path := AppConf.App.Path.AppPath; path == "" {
 		path, err := os.Getwd()
@@ -96,5 +80,5 @@ func (c *Config) initAppPath() (Config *Config) {
 		AppConf.App.Path.DownloadPath = DownloadPath
 	}
 
-	return
+	return c
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const Version = "1.1"
+const Version = "1.1.3"
 
 func init() {
 	Cmd.AddCommand(version)
@@ -15,8 +15,8 @@ func init() {
 var version = &cobra.Command{
 	Use:   "version",
 	Short: "print gcli version",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(xprintf.Blue("gcli version2 "+Version))
+		fmt.Println(xprintf.Blue("gcli version " + Version))
 	},
 }

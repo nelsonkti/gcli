@@ -74,7 +74,7 @@ func conversionTemplate() error {
 	for _, name := range box.List() {
 
 		if strings.HasPrefix(name, ".git/") || strings.HasPrefix(name, ".idea/") ||
-			strings.HasPrefix(name, "log/") || strings.HasPrefix(name, "config.json") {
+			strings.HasPrefix(name, "log/") || name == "config.yaml" || name == "config.json"  {
 			continue
 		}
 

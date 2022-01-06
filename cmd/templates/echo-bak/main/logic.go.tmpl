@@ -28,6 +28,7 @@ type logicProgram struct {
 }
 
 func main() {
+	config.Init()
 	p := &logicProgram{}
 	if err := svc.Run(p, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL); err != nil {
 		logger.Sugar.Fatal(err)
