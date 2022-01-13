@@ -16,7 +16,7 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		tokenData, err := jwt.ParseToken(token)
-		if err != nil || tokenData.UserId == 0 || tokenData.ExpireAt < time.Now().UnixNano() {
+		if err != nil || tokenData.UserId == 0 || tokenData.ExpireAt < time.Now().Unix() {
 			return c.JSON(http.StatusUnauthorized, xrsp.ErrorText("invalid token"))
 		}
 

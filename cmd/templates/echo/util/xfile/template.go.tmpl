@@ -2,7 +2,6 @@ package xfile
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"text/template"
 )
@@ -25,7 +24,6 @@ func ParseTmpl(tmpl string, args interface{}) ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	if err = tmp.Execute(&buf, args); err != nil {
-		fmt.Println("123123123123")
 		return nil, err
 	}
 

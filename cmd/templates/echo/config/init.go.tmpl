@@ -18,31 +18,21 @@ const (
 	DownloadPath = "./public/download"
 )
 
-var AppConf config.Conf
+type fileFuc func() *xfile.FileInfo
+type fuc func()
+type pathFuc func() string
 
-type Config struct {
-	file *xfile.FileInfo
-}
+func containerPath(f pathFuc) string { return f() }
 
 func init() {
-	initConf(initFile()).initAppPath()
+	mappingConf(getConfigFile)
 }
 
-func initFile() *xfile.FileInfo {
-	path, err := os.Getwd()
+func mappingConf(f fileFuc) {
 
-	file, err := xfile.LoadFile(path + configFile)
-	if err != nil {
-		panic(err)
-	}
-
-	return file
-}
-
-func initConf(file *xfile.FileInfo) *Config {
 	var target map[string]interface{}
 
-	err := unmarshal(file, &target)
+	err := unmarshal(f(), &target)
 	if err != nil {
 		panic(err)
 	}
@@ -57,44 +47,64 @@ func initConf(file *xfile.FileInfo) *Config {
 		panic(err)
 	}
 
-	return &Config{}
+	appPath(defaultPath)
 }
 
-func (c *Config) initAppPath() (Config *Config) {
+func getConfigFile() *xfile.FileInfo {
+	path, err := os.Getwd()
 
-	if path := AppConf.App.Path; path == nil {
-		path, err := os.Getwd()
+	file, err := xfile.LoadFile(path + configFile)
+	if err != nil {
+		panic(err)
+	}
 
-		if err != nil {
-			panic(err)
-		}
+	return file
+}
 
-		AppConf.App.Path = &config.App_Path{
-			AppPath:      path,
-			UploadPath:   uploadPath,
-			DownloadPath: DownloadPath,
-		}
+func appPath(f fuc) {
+	f()
 
+	AppConf.App.Path = &config.App_Path{
+		AppPath:      containerPath(defaultAppPath),
+		UploadPath:   containerPath(defaultUploadPath),
+		DownloadPath: containerPath(defaultDownloadPath),
+	}
+}
+
+func defaultPath() {
+	if AppConf.App.GetPath() != nil {
 		return
 	}
+	AppConf.App.Path = &config.App_Path{}
+}
 
-	if path := AppConf.App.Path.AppPath; path == "" {
-		path, err := os.Getwd()
+func defaultAppPath() string {
+	path, err := os.Getwd()
 
-		if err != nil {
-			panic(err)
-		}
-
-		AppConf.App.Path.AppPath = path
+	if err != nil {
+		panic(err)
 	}
 
-	if path := AppConf.App.Path.UploadPath; path == "" {
-		AppConf.App.Path.UploadPath = uploadPath
+	if path := AppConf.App.Path.AppPath; path != "" {
+		return path
 	}
 
-	if path := AppConf.App.Path.DownloadPath; path == "" {
-		AppConf.App.Path.DownloadPath = DownloadPath
+	return path
+}
+
+func defaultUploadPath() string {
+	if path := AppConf.App.Path.UploadPath; path != "" {
+		return path
 	}
 
-	return
+	return uploadPath
+}
+
+func defaultDownloadPath() string {
+
+	if path := AppConf.App.Path.DownloadPath; path != "" {
+		return path
+	}
+
+	return DownloadPath
 }

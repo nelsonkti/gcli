@@ -1,5 +1,11 @@
 package config
 
+import (
+	config "{{.ShortPath}}{{.Name}}/config/pb"
+)
+
+var AppConf config.Conf
+
 var (
-	AppSign = "demo"
+	JwtSecret = "demo"
 )

@@ -22,7 +22,7 @@ func ParseToken(tokenString string) (*TokenData, error) {
 		}
 
 		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
-		return []byte(config.AppSign), nil
+		return []byte(config.JwtSecret), nil
 	})
 
 	if err != nil {
@@ -41,7 +41,10 @@ func ParseToken(tokenString string) (*TokenData, error) {
 		UserId = uint64(claims["user_id"].(float64))
 	}
 
-	return &TokenData{UserId: UserId, ExpireAt: int64(claims["exp"].(float64))}, nil
+	return &TokenData{
+		UserId: UserId,
+		ExpireAt: int64(claims["exp"].(float64)),
+	}, nil
 
 }
 
@@ -51,6 +54,6 @@ func MakeToken(data TokenData) string {
 		"expire_at": data.ExpireAt,
 	})
 
-	tokenString, _ := token.SignedString([]byte(config.AppSign))
+	tokenString, _ := token.SignedString([]byte(config.JwtSecret))
 	return tokenString
 }

@@ -7,10 +7,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/nelsonkti/gcli/lib"
-	"github.com/nelsonkti/gcli/util/xfile"
-	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/gobuffalo/packr/v2"
+	"github.com/nelsonkti/gcli/lib"
+	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
@@ -19,8 +18,9 @@ import (
 )
 
 var (
-	sourcePath string
-	destPath   string
+	sourcePath  string
+	destPath    string
+	replaceName string
 )
 
 func init() {
@@ -29,6 +29,7 @@ func init() {
 
 	templateCommand.PersistentFlags().StringVar(&sourcePath, "s", "$GOPATH", "source file path")
 	templateCommand.PersistentFlags().StringVar(&destPath, "d", "$GOPATH", "create file path")
+	templateCommand.PersistentFlags().StringVar(&replaceName, "r", "", "replace name")
 
 }
 
@@ -58,12 +59,6 @@ func conversionTemplate() error {
 
 	box := packr.New(sourcePath, sourcePath)
 
-	var projectName string
-	destPathSeparator := strings.LastIndex(destPath, string(os.PathSeparator))
-	if destPathSeparator > 0 {
-		projectName = destPath[destPathSeparator+1:]
-	}
-
 	_, err = ioutil.ReadDir(destPath)
 	if err != nil {
 		if err = os.MkdirAll(destPath, 0755); err != nil {
@@ -71,14 +66,16 @@ func conversionTemplate() error {
 		}
 	}
 
+	newAbsPath := "/" + box.ResolutionDir + "/"
+
 	for _, name := range box.List() {
 
 		if strings.HasPrefix(name, ".git/") || strings.HasPrefix(name, ".idea/") ||
-			strings.HasPrefix(name, "log/") || name == "config.yaml" || name == "config.json"  {
+			strings.HasPrefix(name, "log/") || name == "config.yaml" || name == "config.json" {
 			continue
 		}
 
-		tmpl, _ := box.FindString(name)
+		tmpl, _ := box.FindString(newAbsPath + name)
 
 		i := strings.LastIndex(name, string(os.PathSeparator))
 
@@ -89,13 +86,49 @@ func conversionTemplate() error {
 			}
 		}
 
+		tmpl = PareTmpl(name, tmpl, replaceName)
+
 		name = fmt.Sprintf("%s.%s", name, "tmpl")
 
-		if err = xfile.WriteFile(filepath.Join(destPath, name), tmpl, projectName); err != nil {
+		if strings.HasSuffix(name, ".example.tmpl") {
+			if err = WriteFile(fmt.Sprintf("%s/%s", destPath, strings.Replace(name, ".example", "", 1)), tmpl); err != nil {
+				return err
+			}
+		}
+
+		if err = WriteFile(fmt.Sprintf("%s/%s", destPath, name), tmpl); err != nil {
 			return err
 		}
 
 	}
 
 	return nil
+}
+
+func WriteFile(path, tmpl string) (err error) {
+	return ioutil.WriteFile(path, []byte(tmpl), 0755)
+}
+
+func PareTmpl(name, tmpl, replaceName string) string {
+	switch name {
+	case "README.md":
+		break
+	case "go.mod":
+		tmpl = pareTmpl(tmpl, replaceName, "{{.Name}}")
+	default:
+		tmpl = pareTmpl(tmpl, replaceName, "{{.ShortPath}}{{.Name}}")
+	}
+
+	return tmpl
+}
+
+func pareTmpl(tmpl, replaceName string, format string) string {
+	if replaceName == "" {
+		return tmpl
+	}
+	return strings.Replace(tmpl, replaceName, format, -1)
+}
+
+func exaClone() {
+
 }
