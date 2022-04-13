@@ -33,7 +33,6 @@ func makeFile(args []string, createType string) error {
 	path := getPath(file)
 	packName := getPackName(path)
 
-	fmt.Println(packName)
 
 	box := packr.New(tmplPath, tmplPath)
 	tmpl, _ := box.FindString(tmplFileName)
@@ -75,7 +74,10 @@ func getPath(file string) string {
 	i := strings.LastIndex(file, string(os.PathSeparator))
 
 	if i > 0 {
-		return strings.ToLower(file[:i])
+		file := file[:i]
+		if xstring.IsUpper(file) {
+			return xstring.Camel2Case(file[:i])
+		}
 	}
 
 	return defaultPath
@@ -85,7 +87,7 @@ func getPackName(path string) string {
 	i := strings.LastIndex(path, string(os.PathSeparator))
 
 	if i > 0 && path != defaultPath {
-		return path[i+1:]
+		return path[:i]
 	}
 
 	return "main"
