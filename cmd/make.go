@@ -21,14 +21,16 @@ var zhName string
 var defaultPath = "./"
 var tmplPath = "./templates/make_templates/"
 var tmplFileName = "tmp.go.tmpl"
+var bakType = "main"
 
 func makeFile(args []string, createType string) error {
 	if name == "" {
 		return errors.New("请输入服务名称, 查看详情 -help")
 	}
 
-	file := strings.Replace(args[0], "\\", "/", -1)
+	bakType = createType
 
+	file := strings.Replace(args[0], "\\", "/", -1)
 	fileName := getFileName(file)
 	path := getPath(file)
 	packName := getPackName(path)
@@ -74,9 +76,9 @@ func getPath(file string) string {
 	i := strings.LastIndex(file, string(os.PathSeparator))
 
 	if i > 0 {
-		file := file[:i]
+		file := file[:i+1]
 		if xstring.IsUpper(file) {
-			return xstring.Camel2Case(file[:i])
+			return xstring.Camel2Case(file)
 		}
 	}
 
@@ -90,7 +92,7 @@ func getPackName(path string) string {
 		return path[:i]
 	}
 
-	return "main"
+	return bakType
 }
 
 func addSuffix(name string, suffix string) string {
