@@ -7,8 +7,7 @@
  |___/          
 ```
 
-[gcli](https://github.com/nelsonkti/gcli) 脚手架工具 可以快速搭建项目框架,内置两套项目基础框架 (`echo-framework`、`iris-framework`)
-
+[gcli](https://github.com/nelsonkti/gcli) 脚手架工具 可以快速搭建项目框架
 ## 安装
 ```
 go get -u github.com/nelsonkti/gcli
@@ -19,24 +18,13 @@ go get -u github.com/nelsonkti/gcli
 
 ## 用法
 
-```
-gcli -h
-``` 
-![](doc/WechatIMG225.png)
-
 创建项目
 ```
 gcli create demo
 ```
-指定创建项目的路径
+指定创建项目的代码库
 ```
-gcli create demo --path /Users/Go/src/*****
-```
-
-指定框架，选择 echo、iris 默认 echo
-
-```
-gcli create demo --fw echo
+gcli create demo --url=https://github.com/nelsonkti/echo-framework
 ```
 
 项目框架详细介绍
