@@ -13,7 +13,6 @@ const (
 	BlueColor   = 34
 )
 
-
 func Yellow(msg string, arg ...interface{}) string {
 	if len(arg) > 0 {
 		return sprint(YellowColor, msg, arg)
@@ -45,7 +44,6 @@ func Green(msg string, arg ...interface{}) string {
 		return sprint(GreenColor, msg)
 	}
 }
-
 
 func sprint(colorValue int, msg string, arg ...interface{}) string {
 

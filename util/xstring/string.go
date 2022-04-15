@@ -30,4 +30,3 @@ func Case2Camel(name string) string {
 	name = strings.Title(name)
 	return strings.Replace(name, " ", "", -1)
 }
-

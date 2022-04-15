@@ -7,9 +7,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/nelsonkti/gcli/util/xfile"
 	"github.com/nelsonkti/gcli/util/xstring"
-	"github.com/gobuffalo/packr/v2"
 	"os"
 	"path/filepath"
 	"strings"
@@ -34,7 +34,6 @@ func makeFile(args []string, createType string) error {
 	fileName := getFileName(file)
 	path := getPath(file)
 	packName := getPackName(path)
-
 
 	box := packr.New(tmplPath, tmplPath)
 	tmpl, _ := box.FindString(tmplFileName)

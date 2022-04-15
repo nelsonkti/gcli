@@ -48,7 +48,7 @@ func (p *Project) IsExists() error {
 		}
 
 		if !override {
-			return errors.New(fmt.Sprintf("\n%s already exists，You have selected the %s not to be overwritten", p.Name, p.Name))
+			return errors.New(fmt.Sprintf("\n%s already exists. \nYou have selected the %s not to be overwritten.", p.Name, p.Name))
 		}
 		_ = os.RemoveAll(p.Dest)
 	}

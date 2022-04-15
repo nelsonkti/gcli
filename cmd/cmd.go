@@ -6,12 +6,11 @@ import (
 	"os"
 )
 
-
 // Cmd represents the base command when called without any subcommands
 var Cmd = &cobra.Command{
 	Use:   "gcli",
 	Short: "gcli is a scaffolding tool for project development.",
-	Long: ``,
+	Long:  ``,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

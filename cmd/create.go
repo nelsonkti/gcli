@@ -59,7 +59,7 @@ func CreateProject(args []string) error {
 		projectName = args[0]
 	}
 
-	fmt.Println(xprintf.Blue("loading...\n"))
+	fmt.Println(xprintf.Green("️⛹ ...\n"))
 
 	pro := project.New(path.Base(projectName), projectName, path.Join(wd, path.Base(projectName)))
 
