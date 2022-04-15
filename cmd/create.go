@@ -1,37 +1,24 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
-	"github.com/nelsonkti/gcli/lib"
-	"github.com/nelsonkti/gcli/util/xfile"
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/nelsonkti/gcli/cmd/templates/project"
 	"github.com/nelsonkti/gcli/util/xprintf"
-	"github.com/gobuffalo/packr/v2"
 	"github.com/spf13/cobra"
 	"os"
-	"path/filepath"
-	"strings"
+	"path"
 )
 
-type Project struct {
-	Name      string
-	Path      string
-	ShortPath string
-}
-
 var (
-	project            Project
-	defaultProjectName = "project-demo"
-	framework          = ""
+	repoUrl = ""
 )
 
 func init() {
 
 	Cmd.AddCommand(createProject)
 
-	createProject.PersistentFlags().StringVar(&project.Path, "path", "$GOPATH", "create project path")
-
-	createProject.PersistentFlags().StringVar(&framework, "fw", "echo", "")
+	createProject.PersistentFlags().StringVar(&repoUrl, "url", "https://github.com/nelsonkti/echo-framework.git", "go code library")
 
 }
 
@@ -49,94 +36,34 @@ modify the project path: gcli create demo --path projectPath`,
 			return
 		}
 
-		fmt.Println(xprintf.Blue("Project dir:", project.Path))
 		fmt.Println(xprintf.Blue("project created successfully"))
 
 	},
 }
 
-// 创建项目
-func CreateProject(newArgs []string) (err error) {
-
-	if lib.Version() < "1.13" {
-		return errors.New("the current version is relatively low")
+func CreateProject(args []string) (err error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
 	}
 
-	if framework != "iris" && framework != "echo" {
-		return errors.New("error selection of framework type")
-	}
-
-	if len(newArgs) <= 0 {
-		fmt.Println(xprintf.Red("execution failed. entered the command incorrectly, please use gcli create -h for details"))
-		return
-	}
-
-	name := newArgs[0]
-	if name == "" {
-		project.Name = defaultProjectName
-	} else {
-		project.Name = name
-	}
-
-	if project.Path != "" {
-
-		if project.Path, err = filepath.Abs(project.Path); err != nil {
+	var projectName string
+	if len(args) == 0 {
+		prompt := &survey.Input{
+			Message: "What is project name ?",
+			Help:    "Created project name. ",
+		}
+		err = survey.AskOne(prompt, &projectName)
+		if err != nil || projectName == "" {
 			return
 		}
-
-		project.Path = filepath.Join(project.Path, project.Name)
-
 	} else {
-
-		path, _ := os.Getwd()
-		project.Path = filepath.Join(path, project.Name)
-
+		projectName = args[0]
 	}
 
-	project.ShortPath = xfile.GetModPath(project.Path)
+	project := project.New(path.Base(projectName), projectName)
 
-	if err = doCreateProject(); err != nil {
-		return
-	}
+	project.Create(wd, repoUrl)
 
-	return
-}
-
-func doCreateProject() (err error) {
-
-	if err = os.MkdirAll(project.Path, 0755); err != nil {
-		return
-	}
-
-	templatesPath := fmt.Sprintf("./templates/" + framework)
-
-	box := packr.New(templatesPath, templatesPath)
-
-	for _, name := range box.List() {
-
-		if project.ShortPath != "" && name == "go.mod.tmpl" {
-			continue
-		}
-
-		tmpl, _ := box.FindString(name)
-
-		i := strings.LastIndex(name, string(os.PathSeparator))
-
-		if i > 0 {
-			dir := name[:i]
-			if err = os.MkdirAll(filepath.Join(project.Path, dir), 0755); err != nil {
-				return
-			}
-		}
-
-		if strings.HasSuffix(name, ".tmpl") {
-			name = strings.TrimSuffix(name, ".tmpl")
-		}
-
-		if err = xfile.WriteFile(filepath.Join(project.Path, name), tmpl, project); err != nil {
-			return
-		}
-	}
-
-	return
+	return nil
 }
