@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package yimLive.config;
+
+option go_package = "config/pb;config";
+
+import "google/protobuf/duration.proto";
+
+message Conf {
+  App app = 1;
+  Server server = 2;
+  Data data = 3;
+  MQ mq = 4;
+  ETCD etcd = 5;
+}
+
+message App {
+  message Path {
+    string app_path = 1;
+    string upload_path = 2;
+    string download_path = 3;
+    string log_path = 4;
+  }
+  message Domain {
+    string api_domain = 1;
+    string web_domain = 2;
+    string app_domain = 3;
+  }
+  string name = 1;
+  string env = 2;
+  Domain domain = 3;
+  Path path = 4;
+}
+
+message Server {
+  message Network {
+    int32 port = 1;
+    google.protobuf.Duration timeout = 2;
+  }
+  Network http = 6;
+  Network socket = 7;
+}
+
+message Data {
+  message Database {
+    string host = 1;
+    repeated string read = 2;
+    int32 port = 3;
+    string username = 4;
+    string password = 5;
+    string database = 6;
+    string alias = 7;
+  }
+  message Connection {
+    string driver = 1;
+    repeated Database database = 2;
+  }
+  message Redis {
+    string network = 1;
+    string addr = 2;
+    string password = 3;
+    google.protobuf.Duration read_timeout = 4;
+    google.protobuf.Duration write_timeout = 5;
+  }
+  message Memcache {
+    repeated string host = 1;
+  }
+  Connection connection = 1;
+  Redis redis = 2;
+  Memcache memcache = 3;
+}
+
+message MQ {
+  message Nsq {
+    string host = 1;
+    repeated string consumer = 2;
+    string admin_address = 3;
+  }
+  Nsq nsq = 1;
+}
+
+message ETCD {
+  repeated string host = 1;
+  bool open_tls = 2;
+  string tls_path = 3;
+}

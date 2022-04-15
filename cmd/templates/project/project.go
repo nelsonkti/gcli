@@ -5,34 +5,28 @@
 package project
 
 import (
+	"errors"
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"os"
-	"path"
 )
 
 type Project struct {
 	Name string
 	Path string
+	Dest string
 }
 
-func New(name string, path string) *Project {
-	return &Project{Name: name, Path: path}
+func New(name, path, dest string) *Project {
+	return &Project{Name: name, Path: path, Dest: dest}
 }
 
 // 创建项目
-func (p *Project) Create(dir, repoUrl string) error {
-	to := path.Join(dir, p.Name)
-
-	// 判断框架是否存在
-	err := p.isExists(to)
-	if err != nil {
-		return err
-	}
+func (p *Project) Create(repoUrl string) error {
 
 	repo := NewRepo(repoUrl)
 
-	if err := repo.Copy(to, p.Path, []string{".git", ".github"}); err != nil {
+	if err := repo.Copy(p.Dest, p.Path, []string{".git", ".github"}); err != nil {
 		return err
 	}
 
@@ -40,9 +34,9 @@ func (p *Project) Create(dir, repoUrl string) error {
 }
 
 // 判断该项目是否存在
-func (p *Project) isExists(to string) error {
-	if _, err := os.Stat(to); !os.IsNotExist(err) {
-		fmt.Printf("🚫 %s already exists\n", p.Name)
+func (p *Project) IsExists() error {
+	if _, err := os.Stat(p.Dest); !os.IsNotExist(err) {
+		fmt.Printf("❎️ %s already exists\n", p.Name)
 		override := false
 		prompt := &survey.Confirm{
 			Message: "📂 Do you want to override the folder ?",
@@ -52,10 +46,11 @@ func (p *Project) isExists(to string) error {
 		if e != nil {
 			return e
 		}
+
 		if !override {
-			return err
+			return errors.New(fmt.Sprintf("\n%s already exists，You have selected the %s not to be overwritten", p.Name, p.Name))
 		}
-		_ = os.RemoveAll(to)
+		_ = os.RemoveAll(p.Dest)
 	}
 
 	return nil

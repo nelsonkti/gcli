@@ -21,6 +21,7 @@ type Repo struct {
 	url    string
 	home   string
 	source string
+	dest   string
 }
 
 // 新仓库
@@ -49,7 +50,8 @@ func (r *Repo) Copy(dest string, modPath string, ignores []string) error {
 	}
 
 	replaces := []string{modulePath, modPath}
-	fmt.Println(replaces)
+
+	r.dest = dest
 
 	err = r.createProject(r.source, dest, replaces, ignores)
 	if err != nil {

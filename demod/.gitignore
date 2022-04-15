@@ -1,0 +1,13 @@
+.idea/
+
+log/
+!vendor/**/log
+
+.DS_Store
+config.json
+config.yaml
+
+main/logic
+main/socket
+
+convention

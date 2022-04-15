@@ -36,12 +36,10 @@ modify the project path: gcli create demo --path projectPath`,
 			return
 		}
 
-		fmt.Println(xprintf.Blue("project created successfully"))
-
 	},
 }
 
-func CreateProject(args []string) (err error) {
+func CreateProject(args []string) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -55,15 +53,32 @@ func CreateProject(args []string) (err error) {
 		}
 		err = survey.AskOne(prompt, &projectName)
 		if err != nil || projectName == "" {
-			return
+			return nil
 		}
 	} else {
 		projectName = args[0]
 	}
 
-	project := project.New(path.Base(projectName), projectName)
+	fmt.Println(xprintf.Blue("loading...\n"))
 
-	project.Create(wd, repoUrl)
+	pro := project.New(path.Base(projectName), projectName, path.Join(wd, path.Base(projectName)))
 
-	return nil
+	// 判断框架是否存在
+	err = pro.IsExists()
+	if err != nil {
+		return err
+	}
+
+	err = pro.Create(repoUrl)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(xprintf.Blue("project created successfully\n"))
+
+	fmt.Println(xprintf.Green("💻 Use the following command to start the project 👇: \n"))
+	fmt.Println(xprintf.Green(fmt.Sprintf("$ cd %s", pro.Dest)))
+	fmt.Println(xprintf.Green("$ go mod tidy"))
+
+	return err
 }
