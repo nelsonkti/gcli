@@ -8,7 +8,9 @@
 ```
 
 [gcli](https://github.com/nelsonkti/gcli) 脚手架工具 可以快速搭建项目框架
+
 ## 安装
+
 ```
 go get -u github.com/nelsonkti/gcli
 ```
@@ -19,10 +21,13 @@ go get -u github.com/nelsonkti/gcli
 ## 用法
 
 创建项目
+
 ```
 gcli create demo
 ```
+
 指定创建项目的代码库
+
 ```
 gcli create demo --url=https://github.com/nelsonkti/echo-framework
 ```
@@ -38,19 +43,50 @@ iris-framework：https://github.com/nelsonkti/iris-framework
 ```
 
 创建 `model`
+
 ```
 gcli make:model Employee\\EmployeeCare --n="员工关怀"
+
+// 相对路径
+gcli make:model ./xx/xx/EmployeeCare --n="员工关怀"
+
+// 当前路径
+gcli make:model EmployeeCare --n="员工关怀"
+
+// 绝对路径
+gcli make:model /xx/xx/EmployeeCare --n="员工关怀"
 ```
 
 创建 `repository`
+
 ```
-gcli make:model Employee\\EmployeeCare --n="员工关怀"
+gcli make:repository Employee\\EmployeeCare --n="员工关怀"
+
+// 相对路径
+gcli make:repository ./xx/xx/EmployeeCare --n="员工关怀"
+
+// 当前路径
+gcli make:repository EmployeeCare --n="员工关怀"
+
+// 绝对路径
+gcli make:repository /xx/xx/EmployeeCare --n="员工关怀"
 ```
 
 创建 `service`
+
 ```
-gcli make:model Employee\\EmployeeCare --n="员工关怀"
+gcli make:service Employee\\EmployeeCare --n="员工关怀"
+
+// 相对路径
+gcli make:service ./xx/xx/EmployeeCare --n="员工关怀"
+
+// 当前路径
+gcli make:service EmployeeCare --n="员工关怀"
+
+// 绝对路径
+gcli make:service /xx/xx/EmployeeCare --n="员工关怀"
 ```
 
 ### 环境要求
- go >= 1.13
+
+go >= 1.18
