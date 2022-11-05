@@ -1,7 +1,6 @@
-/**
-** @创建时间 : 2021/12/22 16:22
-** @作者 : fzy
- */
+// Package xstring
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package xstring
 
 import (

@@ -1,7 +1,6 @@
-/**
-** @创建时间 : 2022/4/14 17:24
-** @作者 : fzy
- */
+// Package project
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package project
 
 import (
@@ -11,6 +10,8 @@ import (
 	"os"
 )
 
+// Project
+// @Description: 项目
 type Project struct {
 	Name string
 	Path string
@@ -21,7 +22,11 @@ func New(name, path, dest string) *Project {
 	return &Project{Name: name, Path: path, Dest: dest}
 }
 
-// 创建项目
+// Create
+// @Description: 创建项目
+// @receiver p
+// @param repoUrl
+// @return error
 func (p *Project) Create(repoUrl string) error {
 
 	repo := NewRepo(repoUrl)
@@ -33,7 +38,10 @@ func (p *Project) Create(repoUrl string) error {
 	return nil
 }
 
-// 判断该项目是否存在
+// IsExists
+// @Description: 判断该项目是否存在
+// @receiver p
+// @return error
 func (p *Project) IsExists() error {
 	if _, err := os.Stat(p.Dest); !os.IsNotExist(err) {
 		fmt.Printf("❎️ %s already exists\n", p.Name)

@@ -1,7 +1,6 @@
-/**
-** @创建时间 : 2022/4/15 09:05
-** @作者 : fzy
- */
+// Package xstring
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package xstring
 
 func InArray(str string, arr []string) bool {

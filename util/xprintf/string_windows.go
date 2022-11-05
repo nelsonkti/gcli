@@ -1,3 +1,4 @@
+//go:build Windows
 // +build Windows
 
 package xprintf
@@ -39,7 +40,6 @@ func Green(msg string, arg ...interface{}) string {
 }
 
 func sprint(msg string, arg ...interface{}) string {
-
 	var res string
 
 	if arg != nil {

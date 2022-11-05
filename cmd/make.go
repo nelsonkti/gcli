@@ -1,15 +1,14 @@
-/**
-** @创建时间 : 2021/12/22 17:40
-** @作者 : fzy
- */
+// Package cmd
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package cmd
 
 import (
 	"errors"
 	"fmt"
+	"gcli/util/xfile"
+	"gcli/util/xstring"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/nelsonkti/gcli/util/xfile"
-	"github.com/nelsonkti/gcli/util/xstring"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,7 +24,7 @@ var bakType = "main"
 
 func makeFile(args []string, createType string) error {
 	if name == "" {
-		return errors.New("请输入服务名称, 查看详情 -help")
+		return errors.New("请输入模型名称, 查看详情 -help")
 	}
 
 	bakType = createType

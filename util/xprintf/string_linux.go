@@ -1,3 +1,4 @@
+//go:build linux
 // +build linux
 
 package xprintf
@@ -46,7 +47,6 @@ func Green(msg string, arg ...interface{}) string {
 }
 
 func sprint(colorValue int, msg string, arg ...interface{}) string {
-
 	var res string
 
 	if arg != nil {

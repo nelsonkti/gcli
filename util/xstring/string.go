@@ -1,7 +1,6 @@
-/**
-** @创建时间 : 2021/12/22 16:23
-** @作者 : fzy
- */
+// Package xstring
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package xstring
 
 import (
@@ -9,7 +8,10 @@ import (
 	"unicode"
 )
 
-// 驼峰转下划线
+// Camel2Case
+// @Description: 驼峰转下划线
+// @param name
+// @return string
 func Camel2Case(name string) string {
 	buffer := NewBuffer()
 	for i, r := range name {

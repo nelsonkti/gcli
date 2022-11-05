@@ -1,13 +1,12 @@
-/**
-** @创建时间 : 2022/4/14 17:41
-** @作者 : fzy
- */
+// Package project
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package project
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/nelsonkti/gcli/util/xstring"
+	"gcli/util/xstring"
 	"golang.org/x/mod/modfile"
 	"log"
 	stdurl "net/url"
@@ -24,7 +23,10 @@ type Repo struct {
 	dest   string
 }
 
-// 新仓库
+// NewRepo
+// @Description: 新仓库
+// @param url
+// @return *Repo
 func NewRepo(url string) *Repo {
 	repo := &Repo{
 		url:  url,
@@ -36,7 +38,13 @@ func NewRepo(url string) *Repo {
 	return repo
 }
 
-// 复制仓库
+// Copy
+// @Description: 复制仓库
+// @receiver r
+// @param dest
+// @param modPath
+// @param ignores
+// @return error
 func (r *Repo) Copy(dest string, modPath string, ignores []string) error {
 
 	if err := r.clone(); err != nil {
@@ -65,7 +73,10 @@ func (r *Repo) Copy(dest string, modPath string, ignores []string) error {
 	return err
 }
 
-// 从git下载文件
+// clone
+// @Description: 从git下载文件
+// @receiver r
+// @return error
 func (r *Repo) clone() error {
 	if _, err := os.Stat(r.source); !os.IsNotExist(err) {
 		return r.pull()
@@ -80,7 +91,10 @@ func (r *Repo) clone() error {
 	return nil
 }
 
-// 从github 更新
+// pull
+// @Description: 从github 更新
+// @receiver r
+// @return error
 func (r *Repo) pull() error {
 
 	cmd := exec.Command("git", "symbolic-ref", "HEAD")
@@ -100,7 +114,10 @@ func (r *Repo) pull() error {
 
 }
 
-// 获取文件路径
+// getSource
+// @Description: 获取文件路径
+// @receiver r
+// @return string
 func (r *Repo) getSource() string {
 	start := strings.LastIndex(r.url, "/")
 	end := strings.LastIndex(r.url, ".git")
@@ -112,7 +129,14 @@ func (r *Repo) getSource() string {
 	return path.Join(r.home, r.url[start+1:end])
 }
 
-// 创建项目
+// createProject
+// @Description: 创建项目
+// @receiver r
+// @param source
+// @param dest
+// @param replaces
+// @param ignores
+// @return error
 func (r *Repo) createProject(source string, dest string, replaces []string, ignores []string) error {
 	var err error
 	var fds []os.DirEntry
@@ -155,7 +179,10 @@ func (r *Repo) createProject(source string, dest string, replaces []string, igno
 	return err
 }
 
-// 临时存放位置
+// homeDir
+// @Description: 临时存放位置
+// @param dir
+// @return string
 func homeDir(dir string) string {
 	home := path.Join(HomeDir(), dir)
 	if _, err := os.Stat(home); os.IsNotExist(err) {
@@ -166,7 +193,10 @@ func homeDir(dir string) string {
 	return home
 }
 
-// 仓库目录
+// repoDir
+// @Description: 仓库目录
+// @param url
+// @return string
 func repoDir(url string) string {
 	if !strings.Contains(url, "//") {
 		url = "//" + url
@@ -191,7 +221,11 @@ func repoDir(url string) string {
 	return url[start:end]
 }
 
-// ModulePath returns go module path.
+// ModulePath
+// @Description: 返回go module path
+// @param filename
+// @return string
+// @return error
 func ModulePath(filename string) (string, error) {
 	modBytes, err := os.ReadFile(filename)
 	if err != nil {
@@ -200,7 +234,12 @@ func ModulePath(filename string) (string, error) {
 	return modfile.ModulePath(modBytes), nil
 }
 
-// 创建文件
+// createFile
+// @Description: 创建文件
+// @param src
+// @param dst
+// @param replaces
+// @return error
 func createFile(src, dst string, replaces []string) error {
 	var err error
 	srcinfo, err := os.Stat(src)

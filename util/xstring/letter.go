@@ -1,12 +1,14 @@
-/**
-** @创建时间 : 2021/12/22 16:32
-** @作者 : fzy
- */
+// Package xstring
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package xstring
 
 import "unicode"
 
-// 判断是否有大写
+// IsUpper
+// @Description: 判断是否有大写
+// @param s
+// @return bool
 func IsUpper(s string) bool {
 	for _, r := range s {
 		if unicode.IsUpper(r) {
@@ -16,7 +18,10 @@ func IsUpper(s string) bool {
 	return false
 }
 
-// 判断是否有小写
+// IsLower
+// @Description: 判断是否有小写
+// @param s
+// @return bool
 func IsLower(s string) bool {
 	for _, r := range s {
 		if unicode.IsLetter(r) {

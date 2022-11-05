@@ -7,7 +7,6 @@ import (
 )
 
 func WriteFile(path, tmpl string, args interface{}) (err error) {
-
 	data, err := ParseTmpl(tmpl, args)
 	if err != nil {
 		return
@@ -17,7 +16,6 @@ func WriteFile(path, tmpl string, args interface{}) (err error) {
 }
 
 func ParseTmpl(tmpl string, args interface{}) ([]byte, error) {
-
 	tmp, err := template.New("").Parse(tmpl)
 	if err != nil {
 		return nil, err

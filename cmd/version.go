@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/nelsonkti/gcli/util/xprintf"
+	"gcli/util/xprintf"
 	"github.com/spf13/cobra"
 )
 
-const Version = "v1.2.2"
+const Version = "v1.2.3"
 
 func init() {
 	Cmd.AddCommand(version)

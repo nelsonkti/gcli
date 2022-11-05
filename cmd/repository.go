@@ -1,12 +1,11 @@
-/**
-** @创建时间 : 2021/12/22 15:52
-** @作者 : fzy
- */
+// Package cmd
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package cmd
 
 import (
 	"fmt"
-	"github.com/nelsonkti/gcli/util/xprintf"
+	"gcli/util/xprintf"
 	"github.com/spf13/cobra"
 )
 

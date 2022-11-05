@@ -1,15 +1,14 @@
-/**
-** @创建时间 : 2021/12/22 10:39
-** @作者 : fzy
- */
+// Package cmd
+// @Author fzy
+// @Date 2022-04-14 15:04:03
 package cmd
 
 import (
 	"errors"
 	"fmt"
+	"gcli/lib"
+	"gcli/util/xprintf"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/nelsonkti/gcli/lib"
-	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
@@ -127,8 +126,4 @@ func pareTmpl(tmpl, replaceName string, format string) string {
 		return tmpl
 	}
 	return strings.Replace(tmpl, replaceName, format, -1)
-}
-
-func exaClone() {
-
 }
