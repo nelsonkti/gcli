@@ -10,21 +10,34 @@ import (
 	"github.com/nelsonkti/gcli/util/xfile"
 	"github.com/nelsonkti/gcli/util/xstring"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 	"time"
 )
 
-var name string
-var zhName string
-var defaultPath = "./"
-var tmplPath = "./templates/make_templates/"
-var tmplFileName = "tmp.go.tmpl"
-var bakType = "main"
+const tmplGoFileName = "tmp.go.tmpl"
+const tmplProtoFileName = "tmp.proto.tmpl"
+
+var (
+	name        = ""
+	zhName      = ""
+	bakType     = "main"
+	defaultPath = "./"
+	tmplPath    = "./templates/make_templates/"
+)
+
 var typeNameMap = map[string]string{
 	"model":      "模型",
 	"repository": "仓库",
 	"service":    "服务",
+}
+
+var tmplFileMap = map[string]string{
+	"model":      tmplGoFileName,
+	"repository": tmplGoFileName,
+	"service":    tmplGoFileName,
+	"proto":      tmplProtoFileName,
 }
 
 func makeFile(args []string, createType string) error {
@@ -44,29 +57,31 @@ func makeFile(args []string, createType string) error {
 	bakType = createType
 
 	file := strings.Replace(args[0], "\\", "/", -1)
-	fileName := getFileName(file)
 	path := getPath(file)
+	fileName := getFileName(file)
 	packageName := getPackageName(path)
 
 	box := packr.New(tmplPath, tmplPath)
-	tmpl, _ := box.FindString(tmplFileName)
+	tmpl, _ := box.FindString(tmplFileMap[createType])
 
 	if err := os.MkdirAll(path, 0755); err != nil {
 		return err
 	}
 
-	fileName = addSuffix(fileName, fmt.Sprintf("%s%s", "_", createType))
+	if createType != "proto" {
+		fileName = addSuffix(fileName, fmt.Sprintf("%s%s", "_", createType))
+	}
 
-	hostname, _ := os.Hostname()
+	u, _ := user.Current()
 	tmplData := map[string]interface{}{
 		"Name":        fmt.Sprintf("%s %s", name, zhName),
 		"CreateTime":  time.Now().Format("2006-01-02 15:04:05"),
-		"Author":      hostname,
+		"Author":      u.Username,
 		"PackageName": packageName,
 		"StructName":  xstring.Case2Camel(fileName),
 	}
 
-	if err := xfile.WriteFile(filepath.Join(path, addSuffix(fileName, ".go")), tmpl, tmplData); err != nil {
+	if err := xfile.WriteFile(filepath.Join(path, addSuffix(fileName, fileSuffix(tmplFileMap[createType]))), tmpl, tmplData); err != nil {
 		return err
 	}
 
@@ -132,4 +147,17 @@ func addSuffix(name string, suffix string) string {
 	}
 
 	return name
+}
+
+// fileSuffix
+// @Description: 文件后缀
+// @param tmpFileName
+// @return string
+func fileSuffix(tmpFileName string) string {
+	if strings.Contains(tmpFileName, ".go") {
+		return ".go"
+	} else if strings.Contains(tmpFileName, "proto") {
+		return ".proto"
+	}
+	return ".go"
 }

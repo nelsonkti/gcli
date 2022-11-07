@@ -1,0 +1,15 @@
+// Package {{.PackageName}}
+// @Author {{.Author}}
+// @Date {{.CreateTime}}
+syntax = "proto3";
+option go_package = "./;protobuf";
+
+// {{.Name}}请求
+message {{.StructName}}Request {
+  string message = 1;
+}
+
+// {{.Name}}响应
+message {{.StructName}}Response {
+  string message = 1;
+}
