@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"gcli/cmd/templates/project"
-	"gcli/util/xprintf"
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/nelsonkti/gcli/cmd/templates/project"
+	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/spf13/cobra"
 	"os"
 	"path"

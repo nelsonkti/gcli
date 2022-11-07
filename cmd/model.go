@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"fmt"
-	"gcli/util/xprintf"
+	"github.com/nelsonkti/gcli/util/xprintf"
 	"github.com/spf13/cobra"
 )
 

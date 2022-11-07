@@ -6,7 +6,7 @@ package project
 import (
 	"bytes"
 	"fmt"
-	"gcli/util/xstring"
+	"github.com/nelsonkti/gcli/util/xstring"
 	"golang.org/x/mod/modfile"
 	"log"
 	stdurl "net/url"
