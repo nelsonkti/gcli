@@ -1,0 +1,18 @@
+// Package {{.PackageName}}
+// @Author {{.Author}}
+// @Date {{.CreateTime}}
+
+package {{.PackageName}}
+
+// {{.StructName}} {{.Name}}
+type {{.StructName}} interface {
+
+}
+
+type {{.FirstLowerStructName}} struct {
+}
+
+func New{{.StructName}}() {{.StructName}} {
+	return &{{.FirstLowerStructName}}{
+	}
+}

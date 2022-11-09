@@ -17,6 +17,8 @@ import (
 )
 
 const tmplGoFileName = "tmp.go.tmpl"
+const tmplGoFileRepositoryName = "tmp.repository.tmpl"
+const tmplGoFileServiceName = "tmp.service.tmpl"
 const tmplProtoFileName = "tmp.proto.tmpl"
 
 var (
@@ -35,9 +37,9 @@ var typeNameMap = map[string]string{
 
 var tmplFileMap = map[string]string{
 	"model":      tmplGoFileName,
-	"repository": tmplGoFileName,
-	"service":    tmplGoFileName,
 	"proto":      tmplProtoFileName,
+	"service":    tmplGoFileServiceName,
+	"repository": tmplGoFileRepositoryName,
 }
 
 func makeFile(args []string, createType string) error {
@@ -73,12 +75,14 @@ func makeFile(args []string, createType string) error {
 	}
 
 	u, _ := user.Current()
+	structName := xstring.Case2Camel(fileName)
 	tmplData := map[string]interface{}{
-		"Name":        fmt.Sprintf("%s %s", name, zhName),
-		"CreateTime":  time.Now().Format("2006-01-02 15:04:05"),
-		"Author":      u.Username,
-		"PackageName": packageName,
-		"StructName":  xstring.Case2Camel(fileName),
+		"Name":                 fmt.Sprintf("%s %s", name, zhName),
+		"CreateTime":           time.Now().Format("2006-01-02 15:04:05"),
+		"Author":               u.Username,
+		"PackageName":          packageName,
+		"StructName":           structName,
+		"FirstLowerStructName": xstring.FirstLower(structName),
 	}
 
 	if err := xfile.WriteFile(filepath.Join(path, addSuffix(fileName, fileSuffix(tmplFileMap[createType]))), tmpl, tmplData); err != nil {
